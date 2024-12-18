@@ -1,0 +1,12 @@
+{
+	"tasks": {
+		"dev": "deno run --watch main.ts"
+	},
+	"imports": {
+		"@solana/spl-token": "npm:@solana/spl-token@^0.4.9",
+		"@solana/web3.js": "npm:@solana/web3.js@^1.98.0",
+		"bs58": "npm:bs58@^6.0.0",
+		"buffer": "npm:buffer@^6.0.3"
+	},
+	"nodeModulesDir": "auto"
+}

@@ -1,0 +1,4 @@
+node_modules
+wallets/private_keys.txt
+wallets/test.json
+.env
