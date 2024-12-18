@@ -30,5 +30,7 @@
 ## Debugging
 
 Error: `"Transaction simulation failed: Blockhash not found"`
+
 Solution: try again after a few seconds
+
 Reason: The blockhash is not yet available

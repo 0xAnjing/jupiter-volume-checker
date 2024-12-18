@@ -237,7 +237,7 @@ async function addIdempotentInstruction(
 	const ataPublicKey = await getAssociatedTokenAddressSync(keypair.publicKey);
 
 	const instruction = createAssociatedTokenAccountIdempotentInstruction(
-		payer.publicKey,
+		payer.publicKey, // change to keypair.publicKey if you want the wallet to pay for its own ATA
 		ataPublicKey,
 		keypair.publicKey,
 		mint
