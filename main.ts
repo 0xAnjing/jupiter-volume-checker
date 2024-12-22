@@ -7,6 +7,7 @@ import {
 	Transaction,
 	ComputeBudgetProgram,
 	TransactionInstruction,
+	SYSVAR_INSTRUCTIONS_PUBKEY,
 } from "@solana/web3.js";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -80,7 +81,7 @@ async function main() {
 			) === index
 	);
 
-	keypairs = await checkEligibility(keypairs);
+	// keypairs = await checkEligibility(keypairs); // skip check
 	if (keypairs.length === 0) {
 		console.log("No wallets are eligible for airdrop");
 		return;
@@ -121,10 +122,23 @@ async function getWalletFromJson(filename: string) {
 
 async function checkEligibility(keypairs: Keypair[]): Promise<Keypair[]> {
 	for (const keypair of keypairs) {
+		// let resp = await fetch(
+		// 	"https://api.clusters.xyz/v0.1/airdrops/pengu/eligibility/" +
+		// 	keypair.publicKey.toString()
+		// );
+
 		let resp = await fetch(
-			"https://api.clusters.xyz/v0.1/airdrops/pengu/eligibility/" +
-				keypair.publicKey.toString()
-		);
+			"https://api.clusters.xyz/v0.1/airdrops/pengu/eligibility",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(
+					[keypair.publicKey.toString()]
+				),
+			}
+		)
 
 		const response = await resp.json();
 
@@ -162,6 +176,15 @@ async function claimAirdrop(keypairs: Keypair[]) {
 
 		await addIdempotentInstruction(transaction, keypairs[i]);
 		await addClaimInstruction(transaction, keypairs[i]);
+	}
+
+	if (transaction.instructions.length === 0) {
+		console.log("No instructions to execute");
+		return;
+	}
+
+	if (transaction.instructions.length < 3) {
+		return "No claim instructions are present in the transaction";
 	}
 
 	const signature = await sendAndConfirmTransaction(
@@ -223,8 +246,24 @@ async function addClaimInstruction(transaction: Transaction, keypair: Keypair) {
 				isSigner: false, // On SolScan, this is true
 				isWritable: false,
 			},
+			{
+				pubkey: TOKEN_PROGRAM_ID,
+				isSigner: false,
+				isWritable: false,
+			},
+			{
+				pubkey: SYSVAR_INSTRUCTIONS_PUBKEY,
+				// pubkey: new PublicKey("Sysvar1nstructions1111111111111111111111111"),
+				isSigner: false,
+				isWritable: false,
+			}
 		],
-		data: Buffer.alloc(8),
+		data: Buffer.from([
+			0x3e, 0xe6, 0xd6, 0x1b, 0x98, 0x5f, 0xfe, 0x20,
+			0x01, 0x00, 0x00, 0x07, 0xed, 0x46, 0x00, 0x40,
+			0x51, 0xdd, 0x31, 0x00, 0x00, 0x00, 0x08, 0xaf,
+			0x66, 0x15, 0x7
+		])
 	});
 
 	transaction.add(instruction);
