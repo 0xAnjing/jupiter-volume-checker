@@ -1,4 +1,5 @@
 node_modules
-wallets/private_keys.txt
-wallets/test.json
+wallets/addresses.txt
+wallets/*.json
+output/result.json
 .env
