@@ -99,19 +99,24 @@ function calculateSwapVolumes(wallets: string) {
 }
 
 function parseResults(results: Record<string, unknown>[]) {
-	const swapVolumes: { [key: string]: number } = {
+	const swapVolumes: {
+		[key: string]:
+			| number
+			| { volume_usd: number; estimated_jup_airdrop: number };
+	} = {
 		total_volume_usd: results[0]["total_volume_usd"] as number,
+		total_estimated_jup: results[0]["total_estimated_jup_airdrop"] as number,
 	};
 
 	(results as Record<string, unknown>[]).forEach((result) => {
 		const address = result["wallet"] as string;
 		const volume = result["wallet_volume_usd"] as number;
+		const jupiter = result["estimated_jup_airdrop"] as number;
 
-		if (swapVolumes[address]) {
-			swapVolumes[address] += volume;
-		} else {
-			swapVolumes[address] = volume;
-		}
+		swapVolumes[address] = {
+			volume_usd: volume,
+			estimated_jup_airdrop: jupiter,
+		};
 	});
 
 	console.log("🚀 ~ parseResults ~ swapVolumes:", swapVolumes);
