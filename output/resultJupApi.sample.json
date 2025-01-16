@@ -1,0 +1,32 @@
+{
+	"total_estimated_jup": 1000,
+	"total_volume_usd": 179188.43525592185,
+	"4qWKgdUQTfV771dxKp2HeBqEzTXEKW7agijrfDfpsXPC": { "error": "No data found" },
+	"HdxkiXqeN6qpK2YbG51W23QSWj3Yygc1eEk2zwmKJExp": {
+		"user_public_key": "HdxkiXqeN6qpK2YbG51W23QSWj3Yygc1eEk2zwmKJExp",
+		"swap_score": 179188.43525592185,
+		"swap_tier": 5,
+		"swap_allocation_base": 1000,
+		"swap_consistency_bonus": 0,
+		"expert_score": 0,
+		"expert_tier": 0,
+		"expert_allocation": 0,
+		"stakers_score": 0,
+		"stakers_allocation_base": 0,
+		"stakers_super_voter_bonus": 0,
+		"stakers_super_staker_bonus": 0,
+		"mobile_potential_bonus": 50,
+		"flagged_by_chainanalysis": false,
+		"flagged_as_ATA": false,
+		"total_allocated": 1000
+	},
+	"3JoJDyQGcPDmjyzkjy8zean7TpyKPpJfbUjA9AHMSb7k": {
+		"likely_sybil": false,
+		"excluded_because_distinct_weeks_under_3": false,
+		"excluded_because_obscure_pairs": false,
+		"excluded_because_failure_rate": false,
+		"excluded_because_not_enough_swap_points": true,
+		"flagged_by_chainanalysis": false,
+		"flagged_as_ATA": false
+	}
+}

@@ -2,4 +2,6 @@ node_modules
 wallets/addresses.txt
 wallets/*.json
 output/result.json
+output/resultJupApi.json
 .env
+.DS_Store

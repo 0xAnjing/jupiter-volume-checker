@@ -5,6 +5,7 @@ import {
 	QueryParameter,
 	RunQueryArgs,
 } from "@duneanalytics/client-sdk";
+import select from "@inquirer/select";
 
 const dune = new DuneClient(Deno.env.get("DUNE_API_KEY") ?? "");
 
@@ -34,7 +35,32 @@ async function main() {
 	console.log(
 		"Calculating swap volumes for " + publicAddresses.length + " wallets"
 	);
-	calculateSwapVolumes(publicAddresses.join(","));
+
+	const answer = await select({
+		message: "Select $JUP check",
+		choices: [
+			{
+				name: "JUP API",
+				value: "api",
+				description: "Check using official Jup website https://jupuary.jup.ag/",
+			},
+			{
+				name: "Dune Analytics",
+				value: "dune",
+				description:
+					"Check using Dune Analytics https://dune.com/0xanjing/jupuary2024snapshot. Not accurate",
+			},
+		],
+	});
+
+	switch (answer) {
+		case "api":
+			calculateSwapVolumesUsingJupiter(publicAddresses);
+			break;
+		case "dune":
+			calculateSwapVolumes(publicAddresses.join(","));
+			break;
+	}
 }
 
 async function getFiles() {
@@ -121,6 +147,48 @@ function parseResults(results: Record<string, unknown>[]) {
 
 	console.log("🚀 ~ parseResults ~ swapVolumes:", swapVolumes);
 	return swapVolumes;
+}
+
+async function calculateSwapVolumesUsingJupiter(wallets: string[]) {
+	let total_jup = 0;
+	let total_volume = 0;
+	const results: {
+		[key: string]: number | { error?: string };
+	} = { total_estimated_jup: 0, total_volume_usd: 0 };
+
+	for (const wallet of wallets) {
+		const res = await fetch(
+			`https://jupuary.jup.ag/api/allocation?wallet=${wallet}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					referer: `https://jupuary.jup.ag/allocation/${wallet}`,
+				},
+			}
+		);
+
+		const data = await res.json();
+
+		if (!data.data) {
+			results[wallet] = {
+				error: "No data found",
+			};
+		}
+
+		if (data.data) {
+			results[wallet] = data.data;
+		}
+
+		total_jup += data.data?.total_allocated ?? 0;
+		total_volume += data.data?.swap_score ?? 0;
+
+		results["total_estimated_jup"] = total_jup;
+		results["total_volume_usd"] = total_volume;
+	}
+
+	Deno.writeTextFile("./output/resultJupApi.json", JSON.stringify(results));
+	console.log("Results saved to output/resultJupApi.json");
 }
 
 main();

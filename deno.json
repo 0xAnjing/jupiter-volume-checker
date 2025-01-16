@@ -4,6 +4,7 @@
 	},
 	"imports": {
 		"@duneanalytics/client-sdk": "npm:@duneanalytics/client-sdk@^0.2.4",
+		"@inquirer/select": "npm:@inquirer/select@^4.0.6",
 		"@solana/spl-token": "npm:@solana/spl-token@^0.4.9",
 		"@solana/web3.js": "npm:@solana/web3.js@^1.98.0",
 		"bs58": "npm:bs58@^6.0.0",

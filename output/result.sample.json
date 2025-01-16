@@ -1,5 +1,12 @@
 {
-	"total_volume_usd": 1880931.5422747298,
-	"4qWKgdUQTfV771dxKp2HeBqEzTXEKW7agijrfDfpsXPC": 1610314.3684553525,
-	"HdxkiXqeN6qpK2YbG51W23QSWj3Yygc1eEk2zwmKJExp": 270617.1738193777
+	"total_volume_usd": 1880931.5422747293,
+	"total_estimated_jup": 13000,
+	"4qWKgdUQTfV771dxKp2HeBqEzTXEKW7agijrfDfpsXPC": {
+		"volume_usd": 1610314.3684553527,
+		"estimated_jup_airdrop": 10000
+	},
+	"HdxkiXqeN6qpK2YbG51W23QSWj3Yygc1eEk2zwmKJExp": {
+		"volume_usd": 270617.1738193777,
+		"estimated_jup_airdrop": 3000
+	}
 }
